@@ -89,6 +89,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WeaponChange"",
+                    ""type"": ""Value"",
+                    ""id"": ""995589f2-5c4b-4372-b533-d411fd3fdf78"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -278,6 +287,39 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""Shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Axis"",
+                    ""id"": ""468c05a2-0706-47e4-882c-692c357fdfe7"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WeaponChange"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""5970b3c9-25ef-43e2-8d7d-4570dc6e69ec"",
+                    ""path"": ""<Mouse>/scroll/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WeaponChange"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""6a7dd959-b42a-4def-965a-41b03863e652"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WeaponChange"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -809,6 +851,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_OnFoot_Sprint = m_OnFoot.FindAction("Sprint", throwIfNotFound: true);
         m_OnFoot_Interact = m_OnFoot.FindAction("Interact", throwIfNotFound: true);
         m_OnFoot_Shoot = m_OnFoot.FindAction("Shoot", throwIfNotFound: true);
+        m_OnFoot_WeaponChange = m_OnFoot.FindAction("WeaponChange", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -887,6 +930,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_OnFoot_Sprint;
     private readonly InputAction m_OnFoot_Interact;
     private readonly InputAction m_OnFoot_Shoot;
+    private readonly InputAction m_OnFoot_WeaponChange;
     public struct OnFootActions
     {
         private @PlayerInput m_Wrapper;
@@ -898,6 +942,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Sprint => m_Wrapper.m_OnFoot_Sprint;
         public InputAction @Interact => m_Wrapper.m_OnFoot_Interact;
         public InputAction @Shoot => m_Wrapper.m_OnFoot_Shoot;
+        public InputAction @WeaponChange => m_Wrapper.m_OnFoot_WeaponChange;
         public InputActionMap Get() { return m_Wrapper.m_OnFoot; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -928,6 +973,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Shoot.started -= m_Wrapper.m_OnFootActionsCallbackInterface.OnShoot;
                 @Shoot.performed -= m_Wrapper.m_OnFootActionsCallbackInterface.OnShoot;
                 @Shoot.canceled -= m_Wrapper.m_OnFootActionsCallbackInterface.OnShoot;
+                @WeaponChange.started -= m_Wrapper.m_OnFootActionsCallbackInterface.OnWeaponChange;
+                @WeaponChange.performed -= m_Wrapper.m_OnFootActionsCallbackInterface.OnWeaponChange;
+                @WeaponChange.canceled -= m_Wrapper.m_OnFootActionsCallbackInterface.OnWeaponChange;
             }
             m_Wrapper.m_OnFootActionsCallbackInterface = instance;
             if (instance != null)
@@ -953,6 +1001,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Shoot.started += instance.OnShoot;
                 @Shoot.performed += instance.OnShoot;
                 @Shoot.canceled += instance.OnShoot;
+                @WeaponChange.started += instance.OnWeaponChange;
+                @WeaponChange.performed += instance.OnWeaponChange;
+                @WeaponChange.canceled += instance.OnWeaponChange;
             }
         }
     }
@@ -1071,6 +1122,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnSprint(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
+        void OnWeaponChange(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

@@ -33,12 +33,20 @@ public class GameInput : MonoBehaviour
 
     public bool GetJumpButtonPressed()
     {
+        
         float pressed = inputActions.OnFoot.Jump.ReadValue<float>();
-        return Mathf.Approximately(pressed, 1);
+        return pressed==1;
     }
     public bool GetShootDownButton()
     {
         float pressed = inputActions.OnFoot.Shoot.ReadValue<float>();
+
         return pressed == 1;
+    }
+    public int GetWeaponChange()
+    {
+        return (int)inputActions.OnFoot.WeaponChange.ReadValue<float>()/120;
+
+   
     }
 }
