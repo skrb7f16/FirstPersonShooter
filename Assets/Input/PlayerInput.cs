@@ -98,6 +98,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Scope"",
+                    ""type"": ""Button"",
+                    ""id"": ""9e4fa9f9-8aeb-440a-9b1b-82e07c328109"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Tap"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -320,6 +329,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""WeaponChange"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4c12d0fd-114f-41c9-bfac-42c956ed1ede"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Scope"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -852,6 +872,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_OnFoot_Interact = m_OnFoot.FindAction("Interact", throwIfNotFound: true);
         m_OnFoot_Shoot = m_OnFoot.FindAction("Shoot", throwIfNotFound: true);
         m_OnFoot_WeaponChange = m_OnFoot.FindAction("WeaponChange", throwIfNotFound: true);
+        m_OnFoot_Scope = m_OnFoot.FindAction("Scope", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -931,6 +952,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_OnFoot_Interact;
     private readonly InputAction m_OnFoot_Shoot;
     private readonly InputAction m_OnFoot_WeaponChange;
+    private readonly InputAction m_OnFoot_Scope;
     public struct OnFootActions
     {
         private @PlayerInput m_Wrapper;
@@ -943,6 +965,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Interact => m_Wrapper.m_OnFoot_Interact;
         public InputAction @Shoot => m_Wrapper.m_OnFoot_Shoot;
         public InputAction @WeaponChange => m_Wrapper.m_OnFoot_WeaponChange;
+        public InputAction @Scope => m_Wrapper.m_OnFoot_Scope;
         public InputActionMap Get() { return m_Wrapper.m_OnFoot; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -976,6 +999,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @WeaponChange.started -= m_Wrapper.m_OnFootActionsCallbackInterface.OnWeaponChange;
                 @WeaponChange.performed -= m_Wrapper.m_OnFootActionsCallbackInterface.OnWeaponChange;
                 @WeaponChange.canceled -= m_Wrapper.m_OnFootActionsCallbackInterface.OnWeaponChange;
+                @Scope.started -= m_Wrapper.m_OnFootActionsCallbackInterface.OnScope;
+                @Scope.performed -= m_Wrapper.m_OnFootActionsCallbackInterface.OnScope;
+                @Scope.canceled -= m_Wrapper.m_OnFootActionsCallbackInterface.OnScope;
             }
             m_Wrapper.m_OnFootActionsCallbackInterface = instance;
             if (instance != null)
@@ -1004,6 +1030,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @WeaponChange.started += instance.OnWeaponChange;
                 @WeaponChange.performed += instance.OnWeaponChange;
                 @WeaponChange.canceled += instance.OnWeaponChange;
+                @Scope.started += instance.OnScope;
+                @Scope.performed += instance.OnScope;
+                @Scope.canceled += instance.OnScope;
             }
         }
     }
@@ -1123,6 +1152,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnInteract(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnWeaponChange(InputAction.CallbackContext context);
+        void OnScope(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

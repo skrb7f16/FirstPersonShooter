@@ -1,12 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
+using UnityEngine.UI;
 public class GunHolder : MonoBehaviour
 {
+    private const string IS_SCOPED = "scoped";
+
     [SerializeField] private BaseGun[] guns;
     [SerializeField] private GameInput gameInput;
+    [SerializeField] private Image crossHair;
+    [SerializeField] private Camera cam;
     private int selectedGun = 0;
+    private bool scoped;
     
     void Start()
     {
@@ -21,7 +27,11 @@ public class GunHolder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-  
+
+        if (gameInput.GetScopeButtonDown())
+        {
+            ScopeUnScopeFunction();
+        }
         int tempRotate = gameInput.GetWeaponChange();
         if (tempRotate == 0) return;
         else
@@ -43,4 +53,20 @@ public class GunHolder : MonoBehaviour
 
         guns[selectedGun].gameObject.SetActive(true);
     }
+
+    private void ScopeUnScopeFunction()
+    {
+        scoped = !scoped;
+        GetComponent<Animator>().SetBool(IS_SCOPED, scoped);
+        if (scoped)
+        {
+            cam.fieldOfView = 40;
+        }
+        else
+        {
+            cam.fieldOfView = 60;
+        }
+    }
+
+    
 }

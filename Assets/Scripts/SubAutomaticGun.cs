@@ -10,6 +10,8 @@ public class SubAutomaticGun : BaseGun
         SetFireRate(10);
         SetNoOfBulletsForGun(120);
         SetMagzineLimit(30);
+        SetImpactOfBullet(200);
+        SetReloadTime(3);
     }
 
     

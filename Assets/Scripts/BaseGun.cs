@@ -2,36 +2,59 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-public class BaseGun: MonoBehaviour
-    
+public class BaseGun : MonoBehaviour
 {
-    [SerializeField]private Transform cam;
-    [SerializeField]private GameInput gameInput;
+    private const string RELOAD = "reload";
+    private const string IS_SHOOTING = "shooting";
+    
+    [SerializeField] private Transform cam;
+    [SerializeField] private GameInput gameInput;
     [SerializeField] private ParticleSystem muzzleFlash;
     [SerializeField] private GameObject impactFromGunGameObject;
     [SerializeField] private TextMeshProUGUI ammo;
     private float impactForceOfBullet = 150;
     private float range = 100;
     private float fireRate = 1;
-    
     private float nextTimeToFire = 0;
+    private float reloadTime = 2f;
+
     private int totalBulletsForNewWeapon = 10;
     private int currNoOfBullets = 10;
     private int magzineLimit = 5;
-    
 
+    private bool canShoot = true;
+    private bool isShooting;
 
+    private string shootSound = "Shoot";
+
+    private void OnEnable()
+    {
+        if (currNoOfBullets > 0)
+        {
+            canShoot = true;
+            transform.parent.GetComponent<Animator>().SetBool(RELOAD, !canShoot);
+        }
+    }
     void Update()
     {
-        
-        if (gameInput.GetShootDownButton() && Time.time>=nextTimeToFire)
+        if (!canShoot)
         {
-            
+            isShooting = false;
+            return;
+        }
+        transform.parent.GetComponent<Animator>().SetBool(IS_SHOOTING, isShooting);
+        if (gameInput.GetShootDownButton() && Time.time >= nextTimeToFire)
+        {
+            isShooting = true;
             nextTimeToFire = Time.time + 1f / fireRate;
             Fire();
 
         }
-        
+        else
+        {
+            isShooting = false;
+        }
+
     }
 
     private void LateUpdate()
@@ -41,39 +64,39 @@ public class BaseGun: MonoBehaviour
     protected void Fire()
     {
 
-  
-        
+
+
         RaycastHit hit;
         if (Physics.Raycast(cam.position, cam.forward, out hit))
         {
-            
-                if (CanFire())
+
+            if (CanFire())
+            {
+
+                AudioManager.instance.PlaySound(shootSound);
+                if (muzzleFlash != null)
                 {
-                    
-                    AudioManager.instance.PlaySound("Shoot");
-                    if (muzzleFlash != null)
-                    {
-                        muzzleFlash.Play();
-                    }
-                    if (hit.rigidbody != null)
-                    {
-
-                        hit.rigidbody.AddForce(-hit.normal * impactForceOfBullet);
-                    }
-                    if (hit.collider != null)
-                    {
-                        Quaternion impactRotation = Quaternion.LookRotation(hit.normal);
-                        GameObject tempImpact = Instantiate(impactFromGunGameObject, hit.point, impactRotation);
-                        tempImpact.transform.parent = hit.transform;
-                        Destroy(tempImpact, 5f);
-                    }
-                    
-
+                    muzzleFlash.Play();
                 }
-                
-            
+                if (hit.rigidbody != null)
+                {
+
+                    hit.rigidbody.AddForce(-hit.normal * impactForceOfBullet);
+                }
+                if (hit.collider != null)
+                {
+                    Quaternion impactRotation = Quaternion.LookRotation(hit.normal);
+                    GameObject tempImpact = Instantiate(impactFromGunGameObject, hit.point, impactRotation);
+                    tempImpact.transform.parent = hit.transform;
+                    Destroy(tempImpact, 5f);
+                }
+
+
+            }
+
+
         }
-        
+
     }
 
     public void SetImpactOfBullet(float impact)
@@ -111,7 +134,7 @@ public class BaseGun: MonoBehaviour
     public void SetNoOfBulletsForGun(int bullets)
     {
         totalBulletsForNewWeapon = bullets;
-       
+
     }
 
     public void SetMagzineLimit(int bullets)
@@ -122,6 +145,11 @@ public class BaseGun: MonoBehaviour
     }
 
 
+    public void SetReloadTime(float time)
+    {
+        reloadTime = time;
+    }
+
     private bool CanFire()
     {
         
@@ -130,6 +158,7 @@ public class BaseGun: MonoBehaviour
         {
             if (totalBulletsForNewWeapon > 0)
             {
+                StartCoroutine(Reload());
                 if (totalBulletsForNewWeapon > magzineLimit)
                 {
                     currNoOfBullets = magzineLimit;
@@ -153,8 +182,19 @@ public class BaseGun: MonoBehaviour
         return true;
     }
 
-    private void Reload()
+    protected void SetShootSound(string sound)
     {
-        
+        shootSound = sound;
+    }
+    
+    IEnumerator Reload()
+    {
+        AudioManager.instance.PlaySound("Reload");
+        canShoot = false;
+        transform.parent.GetComponent<Animator>().SetBool(RELOAD, !canShoot);
+        yield return new WaitForSeconds(reloadTime);
+        canShoot = true;
+        transform.parent.GetComponent<Animator>().SetBool(RELOAD, !canShoot);
+
     }
 }

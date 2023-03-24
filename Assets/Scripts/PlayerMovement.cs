@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    private const string RUNNING = "speed";
     [SerializeField] GameInput gameInput;
     [SerializeField] private float moveSpeed = 7f;
     [SerializeField] private float gravity = -10f;
     [SerializeField] private float jumpForce = 6f;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Animator animator;
     private CharacterController controller;
     private Vector3 velocity;
     private bool isGrounded;
@@ -28,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
     private void HandleMovement()
     {
         Vector2 inputVector = gameInput.GetMovementDirectionNormalized();
+        animator.SetFloat(RUNNING, Mathf.Abs(inputVector.x) + Mathf.Abs(inputVector.y));
         Vector3 moveDir = new Vector3(inputVector.x, 0, inputVector.y);
         moveDir = transform.right * moveDir.x + transform.forward * moveDir.z;
         

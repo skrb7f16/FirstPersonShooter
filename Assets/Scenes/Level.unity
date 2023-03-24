@@ -14348,7 +14348,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh24912
+  m_Name: pb_Mesh24950
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -15208,6 +15208,8 @@ MonoBehaviour:
   - {fileID: 1546847590}
   - {fileID: 1157408022}
   gameInput: {fileID: 95062873}
+  crossHair: {fileID: 1837475822}
+  cam: {fileID: 1138052337}
 --- !u!198 &671984651 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 6601718286638978940, guid: e0308d9d35bde1342a490e66e758d7d7, type: 3}
@@ -29002,7 +29004,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh24946
+  m_Name: pb_Mesh24992
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -29280,7 +29282,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh24774
+  m_Name: pb_Mesh24790
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -41321,19 +41323,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: fb98406df768fd347a74f32a4a7504cf, type: 3}
   m_PrefabInstance: {fileID: 1393512448}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &1393512452
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 482040430}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.8597817, y: 0.25513774, z: 0.063597284}
-  m_Center: {x: -0.1322201, y: -0.012109373, z: 0.000000026077032}
 --- !u!114 &1393512455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41583,6 +41572,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
+  animator: {fileID: 640863401}
 --- !u!1001 &1546847586
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -41666,19 +41656,6 @@ MonoBehaviour:
   muzzleFlash: {fileID: 6601718286638978940, guid: e0308d9d35bde1342a490e66e758d7d7, type: 3}
   impactFromGunGameObject: {fileID: 100002, guid: 957385c45b877e645a128e11a3efb2f9, type: 3}
   ammo: {fileID: 1715561422}
---- !u!65 &1546847591
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 216561145}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.2, y: 0.19687504, z: 0.06372533}
-  m_Center: {x: -0.2524046, y: 0.025244389, z: 0.008856231}
 --- !u!1 &1611615051
 GameObject:
   m_ObjectHideFlags: 0
@@ -44572,7 +44549,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh24876
+  m_Name: pb_Mesh24914
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -44736,7 +44713,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh24960
+  m_Name: pb_Mesh25006
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -44945,14 +44922,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9aa4348290784b2468144a97eb15d8d7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6975ee4c1f40caf4da8dd733ee2cfeaf, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -45102,6 +45079,16 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: b302b6a411a2a8e42bc0baa5bfd35a2a, type: 3}
     volume: 1
     source: {fileID: 1393512456}
+    isLoop: 0
+  - name: Reload
+    clip: {fileID: 8300000, guid: 773e471fa4c0f884794e848c0b7f781b, type: 3}
+    volume: 1
+    source: {fileID: 0}
+    isLoop: 0
+  - name: SniperShoot
+    clip: {fileID: 8300000, guid: b302b6a411a2a8e42bc0baa5bfd35a2a, type: 3}
+    volume: 3
+    source: {fileID: 0}
     isLoop: 0
 --- !u!43 &1933557690
 Mesh:
@@ -45420,7 +45407,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh24890
+  m_Name: pb_Mesh24928
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

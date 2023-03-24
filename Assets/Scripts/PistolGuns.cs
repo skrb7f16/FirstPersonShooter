@@ -10,7 +10,8 @@ public class PistolGuns : BaseGun
         SetFireRate(1);
         SetNoOfBulletsForGun(30);
         SetMagzineLimit(15);
-        
+        SetImpactOfBullet(100);
+        SetReloadTime(2);
     }
 
    

@@ -11,6 +11,9 @@ public class SniperGun : BaseGun
         SetFireRate(1f);
         SetNoOfBulletsForGun(25);
         SetMagzineLimit(5);
+        SetImpactOfBullet(800f);
+        SetReloadTime(5);
+        SetShootSound("SniperSound");
     }
 
 

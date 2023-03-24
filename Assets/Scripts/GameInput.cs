@@ -43,6 +43,11 @@ public class GameInput : MonoBehaviour
 
         return pressed == 1;
     }
+    
+    public bool GetScopeButtonDown()
+    {
+        return inputActions.OnFoot.Scope.triggered;
+    }
     public int GetWeaponChange()
     {
         return (int)inputActions.OnFoot.WeaponChange.ReadValue<float>()/120;
